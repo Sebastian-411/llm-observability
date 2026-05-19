@@ -1,0 +1,32 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Local environment / secrets
+.env
+.env.local
+.env.*.local
+
+# Vector store persistence
+.chroma/
+chroma_data/
+
+# Data / models cache
+.cache/
+.hf_cache/
+
+# IDE
+.idea/
+.vscode/
+.DS_Store

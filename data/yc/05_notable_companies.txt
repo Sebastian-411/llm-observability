@@ -1,0 +1,57 @@
+Notable Y Combinator alumni companies
+
+Airbnb (Winter 2009)
+  Founders: Brian Chesky, Joe Gebbia, Nathan Blecharczyk.
+  Marketplace for short-term lodging. IPO'd December 2020 at ~$47B.
+  Famously rejected by many investors before YC; PG's wife Jessica Livingston
+  championed them.
+
+Stripe (Summer 2009)
+  Founders: Patrick and John Collison.
+  Payments infrastructure for the internet. Most valuable private YC company,
+  last valued around $65B (2024 tender). Originally called "/dev/payments".
+
+Dropbox (Summer 2007)
+  Founder: Drew Houston (later joined by Arash Ferdowsi).
+  File sync and storage. Public on NASDAQ since 2018 (ticker DBX).
+
+Reddit (Summer 2005 — YC's first batch)
+  Founders: Steve Huffman, Alexis Ohanian.
+  Social news aggregator. Acquired by Condé Nast in 2006; spun back out;
+  IPO'd in March 2024 at ~$6.4B.
+
+Coinbase (Summer 2012)
+  Founders: Brian Armstrong, Fred Ehrsam.
+  Cryptocurrency exchange. Direct-listed on NASDAQ in April 2021.
+
+DoorDash (Summer 2013)
+  Founders: Tony Xu, Stanley Tang, Andy Fang, Evan Moore.
+  Food delivery. IPO'd December 2020 at ~$72B.
+
+Instacart (Summer 2012)
+  Founder: Apoorva Mehta.
+  Grocery delivery. IPO'd September 2023 (Maplebear Inc, ticker CART).
+
+Twitch (Winter 2007, originally Justin.tv)
+  Founders: Justin Kan, Emmett Shear, Michael Seibel, Kyle Vogt.
+  Live streaming. Acquired by Amazon in 2014 for $970M.
+
+GitLab (Winter 2015)
+  Founders: Sid Sijbrandij, Dmitriy Zaporozhets.
+  DevOps platform. IPO'd October 2021.
+
+Rappi (Winter 2016)
+  Founders: Simón Borrero, Sebastián Mejía, Felipe Villamarín.
+  Latin American on-demand delivery. Largest YC company in Latin America.
+
+PagerDuty (Summer 2010)
+  Founders: Alex Solomon, Andrew Miklas, Baskar Puvanathasan.
+  Incident response platform. IPO'd April 2019.
+
+Cruise (Winter 2014)
+  Founder: Kyle Vogt (also Twitch cofounder).
+  Self-driving cars. Acquired by GM in 2016 for ~$1B.
+
+OpenAI was NOT a YC company. Sam Altman led YC during the period he also
+cofounded OpenAI (2015), but OpenAI was founded as a non-profit research lab
+and never went through the YC batch program.

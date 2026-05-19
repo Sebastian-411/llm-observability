@@ -1,0 +1,42 @@
+[
+  {
+    "question": "How much does Y Combinator invest in each startup?",
+    "answer": "Since 2022 the standard deal is $500,000 total per company: $125,000 for 7% equity on a post-money SAFE, plus an additional $375,000 on an uncapped MFN SAFE that converts at the next priced round's valuation."
+  },
+  {
+    "question": "What equity does YC take?",
+    "answer": "YC takes 7% of the company in exchange for $125,000 (the initial 'standard' part of the deal). The additional $375,000 is an uncapped MFN SAFE and does not by itself carry a fixed equity percentage."
+  },
+  {
+    "question": "How long is the YC batch?",
+    "answer": "Approximately three months. Batches run twice or more per year and end with Demo Day."
+  },
+  {
+    "question": "Who currently runs Y Combinator?",
+    "answer": "Garry Tan has been President and CEO of Y Combinator since 2023. He took over from Geoff Ralston."
+  },
+  {
+    "question": "When was Y Combinator founded?",
+    "answer": "Y Combinator was founded in March 2005 by Paul Graham, Jessica Livingston, Robert Tapan Morris, and Trevor Blackwell."
+  },
+  {
+    "question": "What is Bookface?",
+    "answer": "Bookface is YC's private internal social network for YC alumni. It functions as a founder directory, an advice forum, and a warm-intro engine. It is one of YC's most valuable long-term assets."
+  },
+  {
+    "question": "What is the most famous YC motto?",
+    "answer": "'Make something people want.' It is printed on every YC T-shirt and is the closest thing YC has to an official slogan."
+  },
+  {
+    "question": "What is Demo Day?",
+    "answer": "Demo Day is the event at the end of each YC batch where every company in the batch pitches to a curated audience of around 1,000 investors. Pitches are roughly two minutes long with a single slide. Since 2023 Demo Day has been online-first for investors with a parallel in-person event."
+  },
+  {
+    "question": "Is OpenAI a YC company?",
+    "answer": "No. OpenAI was never funded through a YC batch. Sam Altman cofounded OpenAI in 2015 while he was president of YC, but OpenAI was founded independently as a non-profit research lab."
+  },
+  {
+    "question": "What does 'default alive vs default dead' mean?",
+    "answer": "From Paul Graham's 2015 essay. A startup is 'default alive' if it will become profitable on its current burn rate before running out of money, and 'default dead' otherwise. PG argues every founder should know which one they are at all times."
+  }
+]
