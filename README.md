@@ -43,6 +43,10 @@ y **evaluación automática con RAGAS**.
 - **API FastAPI** async con streaming de respuestas (`/query/stream`).
 - **Tooling avanzado del agente**: `retrieve_context` y `memo` (scratchpad
   persistente por sesión).
+- **MCP (Model Context Protocol)**: el agente puede consumir tools externas vía
+  `langchain-mcp-adapters`. Incluye integración con **Tavily** (búsqueda web en
+  vivo) para responder lo que el corpus estático no cubre. Opt-in y con
+  degradación robusta (si el MCP falla, el agente sigue con sus tools nativas).
 - **Robustez de producción**: reintentos exponenciales, manejo de timeouts,
   errores tipados, logs estructurados (structlog), dependency injection,
   configuración 12-factor.
@@ -228,6 +232,46 @@ Devuelve:
 }
 ```
 
+## MCP — búsqueda web con Tavily
+
+El agente puede consumir servidores **MCP** externos como tools adicionales,
+junto a `retrieve_context` y `memo`. La integración usa `langchain-mcp-adapters`
+(`MultiServerMCPClient`) y carga las tools **una sola vez** al arranque (en el
+lifespan de FastAPI), inyectándolas en el `ReActAgent`.
+
+Servidor incluido: **Tavily** (búsqueda/extracción web en vivo). El prompt del
+agente le instruye usar el corpus de YC primero y recurrir a la web sólo cuando
+el corpus no tiene la respuesta (eventos recientes, funding actual, empresas
+nuevas), citando siempre la URL.
+
+### Activar
+
+1. Consigue una API key en [tavily.com](https://tavily.com).
+2. En tu `.env`:
+
+```bash
+MCP_ENABLED=true
+TAVILY_API_KEY=tvly-tu-key
+MCP_TAVILY_TRANSPORT=http   # "http" (remoto, sin Node) | "stdio" (npx tavily-mcp)
+```
+
+3. Levanta la API. En los logs verás `mcp.tools_loaded` con las tools cargadas.
+
+**Transportes:**
+
+- `http` (default): endpoint remoto `https://mcp.tavily.com/mcp/` — no requiere
+  Node, ideal para el contenedor Docker (python-only).
+- `stdio`: ejecuta `npx -y tavily-mcp@latest` localmente (requiere Node/npx).
+
+**Robustez:** MCP es opt-in. Si `MCP_ENABLED=false`, no hay key, o la conexión
+falla, el agente arranca igual y opera sólo con sus tools nativas — un fallo de
+MCP nunca tumba el servicio.
+
+> **Nota de versiones:** integrar MCP requirió `langchain-core>=0.3.36` (subido a
+> `0.3.63`) y `langgraph` 0.2.76 (provee `langgraph.types.Command`). `sse-starlette`
+> queda fijado en `2.1.3` porque las 3.x exigen un `starlette` incompatible con
+> FastAPI 0.115.0. Todo dentro de las series existentes — sin cambios de major.
+
 ## LangSmith
 
 Si `LANGCHAIN_TRACING_V2=true` y `LANGCHAIN_API_KEY` está configurada, **cada
@@ -272,6 +316,9 @@ Ver `.env.example`. Las más relevantes:
 | `LANGCHAIN_TRACING_V2`    | `false`                  | activa LangSmith                           |
 | `LANGCHAIN_API_KEY`       | —                        | api key LangSmith                          |
 | `LANGCHAIN_PROJECT`       | `reto3-react-rag`        | proyecto LangSmith                         |
+| `MCP_ENABLED`             | `false`                  | activa tools MCP externas en el agente     |
+| `TAVILY_API_KEY`          | —                        | api key Tavily (requerida para activar MCP)|
+| `MCP_TAVILY_TRANSPORT`    | `http`                   | `http` (remoto) o `stdio` (npx tavily-mcp) |
 
 ## Extender
 
@@ -281,6 +328,9 @@ Ver `.env.example`. Las más relevantes:
   cualquier modelo de chat de LangChain.
 - **Más tools**: añade `StructuredTool`s en `app/agents/tools.py` y regístralos
   en `_build_graph()`.
+- **Más servidores MCP**: añade su conexión en `build_mcp_connections()`
+  (`app/agents/mcp_client.py`); `load_mcp_tools()` las cargará y el agente las
+  usará automáticamente. `MultiServerMCPClient` soporta varios servidores a la vez.
 
 ## Licencia
 MIT.

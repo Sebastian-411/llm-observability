@@ -46,6 +46,13 @@ class Settings(BaseSettings):
     top_k: int = Field(default=4, alias="TOP_K")
     score_threshold: float = Field(default=0.0, alias="SCORE_THRESHOLD")
 
+    # --- MCP (external tools via Model Context Protocol) ---
+    mcp_enabled: bool = Field(default=False, alias="MCP_ENABLED")
+    tavily_api_key: str = Field(default="", alias="TAVILY_API_KEY")
+    mcp_tavily_transport: Literal["http", "stdio"] = Field(
+        default="http", alias="MCP_TAVILY_TRANSPORT"
+    )
+
     # --- LangSmith ---
     langchain_tracing_v2: bool = Field(default=False, alias="LANGCHAIN_TRACING_V2")
     langchain_endpoint: str = Field(
@@ -68,6 +75,11 @@ class Settings(BaseSettings):
     @property
     def langsmith_enabled(self) -> bool:
         return bool(self.langchain_tracing_v2 and self.langchain_api_key)
+
+    @property
+    def mcp_active(self) -> bool:
+        """MCP is only wired in when explicitly enabled AND a server is configured."""
+        return bool(self.mcp_enabled and self.tavily_api_key)
 
 
 @lru_cache(maxsize=1)

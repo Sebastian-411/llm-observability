@@ -68,6 +68,10 @@ def provide_ingestion_service(
     )
 
 
+def provide_agent() -> ReActAgent:
+    return _agent_singleton()
+
+
 def provide_query_service() -> QueryService:
     return QueryService(agent=_agent_singleton())
 

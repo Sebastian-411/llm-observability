@@ -6,10 +6,11 @@ import uuid
 from typing import Any, AsyncIterator
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
+from langchain_core.tools import BaseTool
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
-from app.agents.prompts import REACT_SYSTEM_PROMPT
+from app.agents.prompts import REACT_SYSTEM_PROMPT, WEB_SEARCH_ADDENDUM
 from app.agents.tools import MemoStore, make_memo_tool, make_retrieve_tool
 from app.config import Settings
 from app.core.exceptions import LLMTimeoutError
@@ -37,11 +38,21 @@ class ReActAgent:
         settings: Settings,
         retriever: Retriever,
         memo_store: MemoStore | None = None,
+        mcp_tools: list[BaseTool] | None = None,
     ) -> None:
         self._settings = settings
         self._retriever = retriever
         self._memo_store = memo_store or MemoStore()
+        self._mcp_tools: list[BaseTool] = list(mcp_tools or [])
         self._llm = self._build_llm()
+
+    def set_mcp_tools(self, tools: list[BaseTool] | None) -> None:
+        """Attach MCP-provided tools after construction (called at app startup).
+
+        The graph is rebuilt per request, so newly attached tools take effect on
+        the next `arun`/`astream` without recreating the agent.
+        """
+        self._mcp_tools = list(tools or [])
 
     # -------------------------------------------------------------------
     # Construction
@@ -58,23 +69,28 @@ class ReActAgent:
         )
 
     def _build_graph(self, session_id: str) -> Any:
-        tools = [
+        tools: list[BaseTool] = [
             make_retrieve_tool(self._retriever),
             make_memo_tool(self._memo_store, session_id),
+            *self._mcp_tools,
         ]
+        # Only advertise the web-search tools in the prompt when they're present.
+        prompt = REACT_SYSTEM_PROMPT
+        if self._mcp_tools:
+            prompt += WEB_SEARCH_ADDENDUM
         # langgraph 0.2.x uses `state_modifier`; 0.3.x renamed it to `prompt`.
         # Try the new kwarg first and fall back so the code works on both.
         try:
             return create_react_agent(
                 model=self._llm,
                 tools=tools,
-                prompt=REACT_SYSTEM_PROMPT,
+                prompt=prompt,
             )
         except TypeError:
             return create_react_agent(
                 model=self._llm,
                 tools=tools,
-                state_modifier=REACT_SYSTEM_PROMPT,
+                state_modifier=prompt,
             )
 
     # -------------------------------------------------------------------

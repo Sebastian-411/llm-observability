@@ -23,4 +23,14 @@ Rules:
 Think step-by-step. Reason out loud (Thought), then call a tool (Action), then read the result (Observation), then continue until you have enough to answer."""
 
 
+WEB_SEARCH_ADDENDUM = """
+
+ADDITIONAL TOOLS — Live web search (Tavily, via MCP):
+You also have access to web search/extract tools whose names start with `tavily`. They reach the live internet and complement — but do NOT replace — the YC knowledge base. Rules for them:
+6. ALWAYS try `retrieve_context` FIRST for anything about YC fundamentals (history, the standard deal, the batch program, Paul Graham's essays, notable alumni). The curated corpus is the source of truth for those.
+7. Use web search ONLY when the corpus does not contain the answer — e.g. recent events, current funding rounds, or companies/facts newer than the corpus.
+8. When you rely on a web result, cite its source URL in the final answer and make clear the fact came from the web, not the YC knowledge base.
+9. If the corpus and the web disagree on a YC fundamental, trust the corpus and say so."""
+
+
 HUMAN_QUESTION_PROMPT = "{question}"

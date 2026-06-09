@@ -37,6 +37,20 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
         embedding_model=settings.embedding_model,
         vectorstore=settings.vectorstore_provider,
     )
+
+    # Load external MCP tools (e.g. Tavily web search) once and attach them to
+    # the long-lived agent. Opt-in via MCP_ENABLED; failures degrade gracefully.
+    if settings.mcp_active:
+        from app.agents.mcp_client import load_mcp_tools
+        from app.api.dependencies import provide_agent
+
+        mcp_tools = await load_mcp_tools(settings)
+        if mcp_tools:
+            provide_agent().set_mcp_tools(mcp_tools)
+            log.info("agent.mcp_attached", count=len(mcp_tools))
+    else:
+        log.info("mcp.inactive")
+
     yield
     log.info("app.stopping")
 
